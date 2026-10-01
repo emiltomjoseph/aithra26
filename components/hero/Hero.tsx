@@ -1,25 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
-import HeroFallback from "@/components/hero/HeroFallback";
+import HeroVideoBackground from "@/components/hero/HeroVideoBackground";
 import BorderBeamButton from "@/components/ui/BorderBeamButton";
 import MetalButton from "@/components/ui/MetalButton";
 import { siteConfig } from "@/data/site";
-import { ChevronDown, Gauge, Cpu, Trophy, Sparkles } from "lucide-react";
-
-// Dynamically import 3D WebGL Canvas
-const HeroCanvas = dynamic(() => import("./HeroCanvas"), {
-  ssr: false,
-  loading: () => <HeroFallback />,
-});
+import { ChevronDown, Gauge, Trophy } from "lucide-react";
 
 interface HeroProps {
   onOpenRegister: () => void;
 }
 
 export default function Hero({ onOpenRegister }: HeroProps) {
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [scrollProgress, setScrollProgress] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -32,15 +24,6 @@ export default function Hero({ onOpenRegister }: HeroProps) {
   });
 
   useEffect(() => {
-    // 1. Mouse movement tracking (-1 to +1)
-    const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth) * 2 - 1;
-      const y = (e.clientY / innerHeight) * 2 - 1;
-      setMouse({ x, y });
-    };
-
-    // 2. Scroll progression tracking
     const handleScroll = () => {
       if (!heroRef.current) return;
       const rect = heroRef.current.getBoundingClientRect();
@@ -52,7 +35,7 @@ export default function Hero({ onOpenRegister }: HeroProps) {
       setScrollProgress(progress);
     };
 
-    // 3. Live countdown calculation to 30 October 2026
+    // Live countdown calculation to 30 October 2026
     const target = new Date(siteConfig.targetDateISO).getTime();
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -74,13 +57,10 @@ export default function Hero({ onOpenRegister }: HeroProps) {
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
-
-    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
@@ -102,30 +82,16 @@ export default function Hero({ onOpenRegister }: HeroProps) {
   return (
     <section
       ref={heroRef}
-      className="relative w-full h-[140vh] bg-luxury-obsidian overflow-hidden select-none"
+      className="relative w-full h-[135vh] bg-black overflow-hidden select-none"
     >
-      {/* Sticky Fullscreen 3D Viewport */}
+      {/* Sticky Fullscreen Real-World Video Viewport */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden">
-        {/* 3D WebGL Canvas with Porsche 911 GT3 RS on Racing Circuit */}
-        <div className="absolute inset-0 z-0">
-          <HeroCanvas mouse={mouse} scrollProgress={scrollProgress} />
-        </div>
-
-        {/* Perforated Dot-Matrix Carbon Texture (Ref Image 5) */}
-        <div
-          className="pointer-events-none absolute inset-0 z-10 opacity-20"
-          style={{
-            backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 0)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-
-        {/* Subtle Cinematic Vignette */}
-        <div className="pointer-events-none absolute inset-0 z-10 bg-radial-vignette opacity-60" />
+        {/* Real-World Cinematic Automotive Video Background */}
+        <HeroVideoBackground scrollProgress={scrollProgress} />
 
         {/* ========================================================
             TOP ZONE: Clean, High-Impact Editorial Header
-            Positioned high so it never blocks the 3D car
+            Positioned high so the real-world video shines below
             ======================================================== */}
         <div
           className="relative z-20 pt-24 sm:pt-28 px-6 sm:px-12 max-w-7xl mx-auto w-full text-center transition-opacity duration-500"
@@ -137,7 +103,7 @@ export default function Hero({ onOpenRegister }: HeroProps) {
             <span>AMAL JYOTHI COLLEGE OF ENGINEERING • TECHFEST 2026</span>
           </div>
 
-          {/* Grand Headline (Inspired by GTA + Ref Image 5) */}
+          {/* Grand Headline (GTA + Ref Image 5) */}
           <h1 className="font-display uppercase tracking-cinematic text-luxury-white leading-none">
             <span className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal block sm:inline sm:mr-4">
               INNOVATION
@@ -156,7 +122,7 @@ export default function Hero({ onOpenRegister }: HeroProps) {
         </div>
 
         {/* ========================================================
-            MIDDLE ZONE: 100% UNCLUTTERED FOR 3D PORSCHE 911 GT3 RS
+            MIDDLE ZONE: 100% UNCLUTTERED FOR REAL-WORLD CAR FOOTAGE
             Left and right margins hold non-intrusive automotive HUD telemetry
             ======================================================== */}
         <div
@@ -164,20 +130,20 @@ export default function Hero({ onOpenRegister }: HeroProps) {
           style={{ opacity: Math.max(0, 1 - scrollProgress * 2.0) }}
         >
           {/* Left Lateral Telemetry HUD */}
-          <div className="hidden lg:flex flex-col gap-3 font-mono text-[10px] text-luxury-muted/70 tracking-widest bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/5">
+          <div className="hidden lg:flex flex-col gap-3 font-mono text-[10px] text-luxury-muted/80 tracking-widest bg-black/50 backdrop-blur-md p-4 rounded-xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
             <div className="flex items-center gap-2 text-cyan-400 font-semibold">
               <Gauge className="h-3.5 w-3.5" />
-              <span>VEHICLE TELEMETRY</span>
+              <span>LIVE AUTOMOTIVE TELEMETRY</span>
             </div>
             <div className="space-y-1">
-              <div>CHASSIS: PORSCHE 911 GT3 RS</div>
-              <div>STEERING RACK: ACTIVE PARALLAX</div>
-              <div>DOWNFORCE: 860 KG @ 285 KM/H</div>
+              <div>MACHINE: HIGH-PERFORMANCE GT</div>
+              <div>POWERTRAIN: TWIN-TURBO FLAT-6</div>
+              <div>TRANSMISSION: 7-SPEED DUAL-CLUTCH</div>
             </div>
           </div>
 
           {/* Right Festival Specs HUD */}
-          <div className="hidden lg:flex flex-col gap-3 font-mono text-[10px] text-luxury-muted/70 tracking-widest bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/5 text-right">
+          <div className="hidden lg:flex flex-col gap-3 font-mono text-[10px] text-luxury-muted/80 tracking-widest bg-black/50 backdrop-blur-md p-4 rounded-xl border border-white/10 text-right shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
             <div className="flex items-center justify-end gap-2 text-luxury-amber font-semibold">
               <Trophy className="h-3.5 w-3.5" />
               <span>CIRCUIT STATUS</span>
@@ -192,14 +158,13 @@ export default function Hero({ onOpenRegister }: HeroProps) {
 
         {/* ========================================================
             BOTTOM ZONE: Docked Capsule Countdown HUD & Action Buttons
-            Compact, sleek, luxury finish
             ======================================================== */}
         <div
           className="relative z-20 pb-8 px-6 flex flex-col items-center gap-4 transition-opacity duration-500"
           style={{ opacity: Math.max(0, 1 - scrollProgress * 1.5) }}
         >
           {/* Ref Image 5: Docked Capsule Countdown HUD */}
-          <div className="flex items-center gap-4 sm:gap-7 rounded-full px-6 sm:px-8 py-2.5 bg-[#08050E]/90 backdrop-blur-2xl border border-cyan-500/30 shadow-[0_0_30px_rgba(0,240,255,0.18)]">
+          <div className="flex items-center gap-4 sm:gap-7 rounded-full px-6 sm:px-8 py-2.5 bg-[#08050E]/90 backdrop-blur-2xl border border-cyan-500/35 shadow-[0_0_30px_rgba(0,240,255,0.22)]">
             {/* Days */}
             <div className="text-center">
               <div className="font-display text-xl sm:text-2xl font-bold text-white tracking-wider leading-none">
