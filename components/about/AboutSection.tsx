@@ -2,122 +2,68 @@
 
 import Image from "next/image";
 import { siteConfig } from "@/data/site";
-import { sound } from "@/lib/audio";
-import { Shield, Sparkles, Trophy, Users, Terminal } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section id="about" className="relative w-full overflow-hidden bg-gta-night py-24 sm:py-32 cyber-grid">
-      {/* Background Lighting Blobs */}
-      <div className="pointer-events-none absolute top-1/4 left-0 h-96 w-96 rounded-full bg-gta-electric/15 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-1/4 right-0 h-96 w-96 rounded-full bg-gta-pink/15 blur-[120px]" />
-
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="flex flex-col items-start">
-          <div className="inline-flex items-center gap-2 rounded bg-gta-magenta/20 px-3 py-1 font-display text-xs uppercase tracking-widest text-gta-yellow">
-            <Terminal className="h-3.5 w-3.5" />
-            <span>DISTRICT 01 // OVERVIEW BRIEFING</span>
-          </div>
-
-          <h2 className="mt-4 font-display text-5xl sm:text-6xl md:text-7xl uppercase tracking-tight text-gta-white">
-            WELCOME TO <span className="text-gta-yellow text-glow-yellow">AITHRA</span>
-          </h2>
-
-          <div className="mt-2 h-1 w-24 bg-gradient-to-r from-gta-yellow to-gta-pink" />
+    <section id="about" className="relative w-full bg-luxury-obsidian py-32 border-t border-white/10">
+      <div className="relative mx-auto max-w-7xl px-6 sm:px-12">
+        {/* Section Index Marker */}
+        <div className="flex items-center gap-4 text-xs font-mono tracking-extreme uppercase text-luxury-muted mb-8">
+          <span className="text-luxury-amber">01 // INTRODUCTION</span>
+          <div className="h-px w-12 bg-white/20" />
+          <span>AITHRA TECHFEST</span>
         </div>
 
-        {/* 2-Column Story / District Overview */}
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left Text / Dossier */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="rounded-xl border border-gta-magenta/30 bg-gta-surface/70 p-6 sm:p-8 backdrop-blur-xl hud-corner">
-              <p className="font-display text-xl sm:text-2xl uppercase tracking-wide text-gta-yellow leading-snug">
-                &ldquo;Where technology meets imagination, powered by the AJCE Students&apos; Council.&rdquo;
-              </p>
+        {/* Editorial Headline Statement */}
+        <div className="max-w-4xl">
+          <h2 className="font-display text-4xl sm:text-6xl md:text-7xl uppercase tracking-cinematic text-luxury-white leading-tight">
+            WHERE TECHNOLOGY MEETS IMAGINATION.
+          </h2>
+        </div>
 
-              <p className="mt-4 text-base sm:text-lg text-gta-white/80 leading-relaxed font-sans">
-                {siteConfig.description}
-              </p>
+        {/* 2-Column Content Layout */}
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left: Editorial Narrative */}
+          <div className="lg:col-span-6 space-y-6 text-sm sm:text-base font-sans text-luxury-muted leading-relaxed font-light">
+            <p className="text-luxury-white text-lg font-normal leading-relaxed">
+              {siteConfig.description}
+            </p>
 
-              <p className="mt-4 text-sm sm:text-base text-gta-white/70 leading-relaxed font-sans">
-                {siteConfig.aboutText}
-              </p>
+            <p>
+              Set against the engineering campus of Amal Jyothi College of Engineering in Kanjirappally, AITHRA 2026 brings together over 70 sanctioned technical competitions, hackathons, engineering masterclasses, and an unprecedented ₹6,00,000+ prize pool.
+            </p>
 
-              {/* 3 Pillar Cards */}
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-gta-white/10 pt-6">
-                <div className="flex items-start gap-3">
-                  <div className="rounded bg-gta-electric/30 p-2 text-gta-yellow">
-                    <Sparkles className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-display text-base uppercase text-gta-white">INNOVATION</h4>
-                    <p className="text-xs text-gta-white/60">Pushing hardware & software frontiers.</p>
-                  </div>
-                </div>
+            <p>
+              Centred around the ethos of innovation, precision, and collaboration, this edition is conceived as a high-performance technological showcase for innovators, designers, and collegiate squads from across India.
+            </p>
 
-                <div className="flex items-start gap-3">
-                  <div className="rounded bg-gta-pink/20 p-2 text-gta-pink">
-                    <Trophy className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-display text-base uppercase text-gta-white">COMPETITION</h4>
-                    <p className="text-xs text-gta-white/60">High-stakes ₹6L+ bounty pools.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="rounded bg-gta-magenta/20 p-2 text-gta-magenta">
-                    <Users className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-display text-base uppercase text-gta-white">COMMUNITY</h4>
-                    <p className="text-xs text-gta-white/60">Over 500+ elite engineers & squads.</p>
-                  </div>
-                </div>
+            <div className="pt-6 border-t border-white/10 grid grid-cols-2 gap-6 font-mono text-xs text-luxury-muted">
+              <div>
+                <span className="text-luxury-dim block mb-1">GOVERNING BODY</span>
+                <span className="text-luxury-white font-medium">AJCE Students&apos; Council</span>
+              </div>
+              <div>
+                <span className="text-luxury-dim block mb-1">DATES</span>
+                <span className="text-luxury-white font-medium">30 — 31 October 2026</span>
               </div>
             </div>
           </div>
 
-          {/* Right Visual / City Portal Card */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative overflow-hidden rounded-2xl border-2 border-gta-magenta/40 bg-gta-surface shadow-2xl shadow-gta-electric/30 hud-corner-lg group">
-              <div className="relative h-80 sm:h-96 w-full overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80"
-                  alt="AITHRA City Atmosphere"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gta-night via-gta-night/40 to-transparent" />
-                
-                {/* Official AJCE Logo Badge */}
-                <div className="absolute top-4 left-4 rounded-lg bg-gta-night/80 p-2 border border-gta-white/10 backdrop-blur-md">
-                  <Image
-                    src="/brand/ajcelogo.png"
-                    alt="Amal Jyothi Logo"
-                    width={90}
-                    height={30}
-                    className="h-7 w-auto object-contain"
-                  />
-                </div>
+          {/* Right: High-End Full Bleed Imagery */}
+          <div className="lg:col-span-6 relative">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-sm border border-white/10 group">
+              <Image
+                src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
+                alt="Automotive & Tech Precision"
+                fill
+                className="object-cover grayscale contrast-125 transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian via-transparent to-transparent opacity-60" />
 
-                {/* Tactical HUD Overlay Box */}
-                <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-gta-yellow/30 bg-gta-night/90 p-4 backdrop-blur-md">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-display text-xs uppercase tracking-widest text-gta-yellow">
-                        OPERATIONAL SECTOR
-                      </span>
-                      <h4 className="font-display text-lg uppercase text-gta-white">
-                        AMAL JYOTHI CAMPUS, KANJIRAPPALLY
-                      </h4>
-                    </div>
-                    <span className="rounded bg-gta-yellow/20 px-2 py-1 font-mono text-xs text-gta-yellow font-bold">
-                      OCT 30-31
-                    </span>
-                  </div>
-                </div>
+              {/* Bottom Caption Bar */}
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[10px] font-mono tracking-widest text-luxury-muted">
+                <span>AMAL JYOTHI CAMPUS, KANJIRAPPALLY</span>
+                <span>OCT 2026</span>
               </div>
             </div>
           </div>

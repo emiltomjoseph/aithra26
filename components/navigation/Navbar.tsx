@@ -3,11 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { siteConfig } from "@/data/site";
-import AudioToggle from "@/components/ui/AudioToggle";
 import MobileMenu from "@/components/navigation/MobileMenu";
-import { Menu, ChevronRight } from "lucide-react";
-import { sound } from "@/lib/audio";
+import { Menu, ArrowRight } from "lucide-react";
 
 interface NavbarProps {
   onOpenRegister: () => void;
@@ -19,19 +16,22 @@ export default function Navbar({ onOpenRegister }: NavbarProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 30);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navLinks = [
+    { name: "ABOUT", href: "#about" },
+    { name: "EVENTS", href: "#events" },
+    { name: "EXPERIENCE", href: "#experience" },
+    { name: "ARCHIVES", href: "#archives" },
+    { name: "CONTACT", href: "#contact" },
+  ];
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    sound.playClick();
     if (href.startsWith("#")) {
       e.preventDefault();
       const elem = document.querySelector(href);
@@ -44,87 +44,65 @@ export default function Navbar({ onOpenRegister }: NavbarProps) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? "border-b border-gta-magenta/25 bg-gta-night/85 py-3 backdrop-blur-xl shadow-lg shadow-black/40"
-            : "bg-gradient-to-b from-gta-night/90 via-gta-night/40 to-transparent py-5"
+            ? "border-b border-white/10 bg-luxury-obsidian/90 py-3.5 backdrop-blur-xl"
+            : "bg-transparent py-6"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Brand Identity */}
-          <Link
-            href="/"
-            onClick={() => sound.playClick()}
-            className="interactive group flex items-center gap-3"
-          >
-            <div className="relative">
-              <Image
-                src="/brand/aithra white.png"
-                alt="AITHRA 2026 Logo"
-                width={130}
-                height={40}
-                priority
-                className="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-            <div className="hidden sm:flex flex-col border-l border-gta-white/15 pl-3">
-              <span className="font-display text-[10px] uppercase tracking-widest text-gta-yellow">
-                TECHFEST 2026
-              </span>
-              <span className="text-[10px] text-gta-white/50 tracking-tight">
-                AMAL JYOTHI
-              </span>
-            </div>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 sm:px-10">
+          {/* Brand Identity: Official AITHRA Logo */}
+          <Link href="/" className="group flex items-center gap-3">
+            <Image
+              src="/brand/aithra white.png"
+              alt="AITHRA 2026"
+              width={110}
+              height={32}
+              priority
+              className="h-6 sm:h-7 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+            />
+            <span className="hidden sm:inline border-l border-white/15 pl-3 font-mono text-[10px] uppercase tracking-widest text-luxury-muted">
+              TECHFEST 2026
+            </span>
           </Link>
 
-          {/* Desktop Nav Items */}
-          <nav className="hidden lg:flex items-center space-x-1 rounded-full border border-gta-white/10 bg-gta-surface/60 px-4 py-1.5 backdrop-blur-md">
-            {siteConfig.navLinks.map((link) => (
+          {/* Desktop Minimal Editorial Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                onMouseEnter={() => sound.playHover()}
-                className="interactive rounded-full px-3.5 py-1 font-display text-sm uppercase tracking-wider text-gta-white/80 transition-all duration-200 hover:text-gta-yellow hover:bg-white/5"
+                className="font-display text-xs uppercase tracking-widest text-luxury-muted transition-colors duration-200 hover:text-luxury-white"
               >
                 {link.name}
               </a>
             ))}
           </nav>
 
-          {/* Actions: Audio + CTA + Mobile Hamburger */}
-          <div className="flex items-center gap-3">
-            <AudioToggle />
-
-            {/* Registration CTA button */}
+          {/* Action: Minimal Discrete Register Button */}
+          <div className="flex items-center gap-4">
             <button
-              onClick={() => {
-                sound.playClick();
-                onOpenRegister();
-              }}
-              onMouseEnter={() => sound.playHover()}
-              className="interactive group relative hidden sm:inline-flex items-center gap-2 overflow-hidden rounded-md bg-gta-yellow px-5 py-2 font-display text-sm font-bold uppercase tracking-wider text-gta-night transition-all duration-300 hover:bg-gta-yellow/90 hover:shadow-neonYellow"
+              onClick={onOpenRegister}
+              className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-2 font-display text-xs uppercase tracking-widest text-luxury-white transition-all duration-300 hover:border-luxury-amber hover:text-luxury-amber hover:bg-white/10"
             >
               <span>REGISTER</span>
-              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </button>
 
-            {/* Mobile Menu Trigger */}
+            {/* Mobile Hamburger */}
             <button
-              onClick={() => {
-                sound.playClick();
-                setIsMobileMenuOpen(true);
-              }}
-              className="interactive flex lg:hidden rounded-lg border border-gta-white/15 bg-gta-surface/80 p-2 text-gta-white hover:border-gta-yellow hover:text-gta-yellow"
-              aria-label="Open mobile navigation"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="flex md:hidden p-2 text-luxury-white hover:text-luxury-amber transition-colors"
+              aria-label="Open navigation menu"
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer */}
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}

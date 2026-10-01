@@ -3,8 +3,7 @@
 import { useState, useMemo } from "react";
 import { missionEvents, categoriesList, departmentsList, MissionEvent } from "@/data/events";
 import MissionCard from "@/components/events/MissionCard";
-import { sound } from "@/lib/audio";
-import { Search, Filter, Crosshair, Sparkles } from "lucide-react";
+import { Search } from "lucide-react";
 
 interface MissionBrowserProps {
   onAcceptMission: (mission: MissionEvent) => void;
@@ -14,163 +13,113 @@ export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps)
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedDept, setSelectedDept] = useState<string>("All Departments");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [sortBy, setSortBy] = useState<"default" | "prize" | "name">("default");
   const [displayCount, setDisplayCount] = useState<number>(12);
 
-  // Filtered & Sorted events
   const filteredMissions = useMemo(() => {
-    return missionEvents
-      .filter((m) => {
-        // Category filter
-        if (selectedCategory !== "all" && m.category !== selectedCategory) {
+    return missionEvents.filter((m) => {
+      if (selectedCategory !== "all" && m.category !== selectedCategory) {
+        return false;
+      }
+      if (selectedDept !== "All Departments" && m.department !== selectedDept) {
+        return false;
+      }
+      if (searchQuery.trim() !== "") {
+        const query = searchQuery.toLowerCase();
+        const matchesTitle = m.title.toLowerCase().includes(query);
+        const matchesDept = m.department.toLowerCase().includes(query);
+        const matchesDesc = m.description.toLowerCase().includes(query);
+        if (!matchesTitle && !matchesDept && !matchesDesc) {
           return false;
         }
-        // Department filter
-        if (selectedDept !== "All Departments" && m.department !== selectedDept) {
-          return false;
-        }
-        // Search query
-        if (searchQuery.trim() !== "") {
-          const query = searchQuery.toLowerCase();
-          const matchesTitle = m.title.toLowerCase().includes(query);
-          const matchesDept = m.department.toLowerCase().includes(query);
-          const matchesDesc = m.description.toLowerCase().includes(query);
-          const matchesCode = m.registrationCode.toLowerCase().includes(query);
-          if (!matchesTitle && !matchesDept && !matchesDesc && !matchesCode) {
-            return false;
-          }
-        }
-        return true;
-      })
-      .sort((a, b) => {
-        if (sortBy === "name") {
-          return a.title.localeCompare(b.title);
-        }
-        if (sortBy === "prize") {
-          const numA = parseInt(a.prizePool.replace(/[^\d]/g, "")) || 0;
-          const numB = parseInt(b.prizePool.replace(/[^\d]/g, "")) || 0;
-          return numB - numA;
-        }
-        return 0;
-      });
-  }, [selectedCategory, selectedDept, searchQuery, sortBy]);
+      }
+      return true;
+    });
+  }, [selectedCategory, selectedDept, searchQuery]);
 
   const visibleMissions = filteredMissions.slice(0, displayCount);
 
-  const handleCategorySelect = (catId: string) => {
-    sound.playClick();
-    setSelectedCategory(catId);
-    setDisplayCount(12);
-  };
-
-  const handleDeptSelect = (dept: string) => {
-    sound.playClick();
-    setSelectedDept(dept);
-    setDisplayCount(12);
-  };
-
   return (
-    <section id="missions" className="relative w-full overflow-hidden bg-gta-night py-24 sm:py-32">
-      {/* Background Lighting Blobs */}
-      <div className="pointer-events-none absolute top-1/3 right-0 h-96 w-96 rounded-full bg-gta-magenta/10 blur-[130px]" />
-      <div className="pointer-events-none absolute bottom-10 left-10 h-80 w-80 rounded-full bg-gta-yellow/10 blur-[120px]" />
-
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Title */}
-        <div className="flex flex-col items-start md:flex-row md:items-end md:justify-between border-b border-gta-magenta/25 pb-8">
+    <section id="events" className="relative w-full bg-luxury-obsidian py-32 border-t border-white/10">
+      <div className="relative mx-auto max-w-7xl px-6 sm:px-12">
+        {/* Section Marker & Title */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-12 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 rounded bg-gta-magenta/20 px-3 py-1 font-display text-xs uppercase tracking-widest text-gta-yellow">
-              <Crosshair className="h-3.5 w-3.5" />
-              <span>TACTICAL MISSION SELECTOR</span>
+            <div className="flex items-center gap-4 text-xs font-mono tracking-extreme uppercase text-luxury-muted mb-4">
+              <span className="text-luxury-amber">03 // COMPETITIONS</span>
+              <div className="h-px w-12 bg-white/20" />
+              <span>SANCTIONED EVENTS</span>
             </div>
 
-            <h2 className="mt-4 font-display text-5xl sm:text-6xl md:text-7xl uppercase tracking-tight text-gta-white">
-              CHOOSE YOUR <span className="text-gta-yellow text-glow-yellow">MISSION</span>
+            <h2 className="font-display text-5xl sm:text-6xl md:text-7xl uppercase tracking-cinematic text-luxury-white">
+              EVENT DIRECTORY
             </h2>
-
-            <p className="mt-2 text-xs sm:text-sm text-gta-white/70 font-sans max-w-xl">
-              Select your battleground. From internal departmental showdowns to state-level flagship hackathons and esports arenas.
-            </p>
           </div>
 
-          <div className="mt-6 md:mt-0 font-mono text-xs text-gta-white/60">
-            TOTAL ACTIVE BRIEFINGS: <span className="text-gta-yellow font-bold text-sm">{filteredMissions.length}</span> / {missionEvents.length}
+          <div className="font-mono text-xs text-luxury-muted uppercase tracking-wider">
+            SHOWING {visibleMissions.length} OF {missionEvents.length} VERIFIED ENTRIES
           </div>
         </div>
 
-        {/* Filter Controls: Category Tabs */}
-        <div className="mt-8 flex flex-wrap items-center gap-2">
+        {/* Filter Bar: Clean Editorial Category Tabs */}
+        <div className="mt-10 flex flex-wrap items-center gap-6 border-b border-white/10 pb-6">
           {categoriesList.map((cat) => {
             const isActive = selectedCategory === cat.id;
+            const label = cat.id === "all" ? "ALL DISCIPLINES" : cat.label.replace("MISSIONS", "EVENTS");
             return (
               <button
                 key={cat.id}
-                onClick={() => handleCategorySelect(cat.id)}
-                className={`interactive flex items-center gap-2 rounded-lg px-4 py-2 font-display text-sm uppercase tracking-wider transition-all duration-200 ${
+                onClick={() => {
+                  setSelectedCategory(cat.id);
+                  setDisplayCount(12);
+                }}
+                className={`font-display text-xs uppercase tracking-widest transition-colors duration-200 ${
                   isActive
-                    ? "bg-gta-yellow text-gta-night font-bold shadow-neonYellow"
-                    : "border border-gta-white/15 bg-gta-surface/70 text-gta-white hover:border-gta-yellow/50 hover:bg-gta-surface"
+                    ? "text-luxury-white border-b-2 border-luxury-amber pb-1"
+                    : "text-luxury-muted hover:text-luxury-white"
                 }`}
               >
-                <span>{cat.label}</span>
-                <span
-                  className={`rounded-full px-1.5 py-0.2 text-[10px] ${
-                    isActive ? "bg-gta-night text-gta-yellow" : "bg-white/10 text-gta-white/60"
-                  }`}
-                >
-                  {cat.count}
-                </span>
+                {label} ({cat.count})
               </button>
             );
           })}
         </div>
 
-        {/* Secondary Bar: Search & Department Dropdown & Sort */}
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-12 gap-3">
+        {/* Secondary Search & Department Filters */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-12 gap-4">
           {/* Search Input */}
-          <div className="sm:col-span-6 relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gta-white/40" />
+          <div className="sm:col-span-8 relative">
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-luxury-dim" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search missions by name, code, or keyword..."
-              className="w-full rounded-lg border border-gta-white/15 bg-gta-surface/80 py-2.5 pl-10 pr-4 text-sm text-gta-white placeholder:text-gta-white/40 focus:border-gta-yellow focus:outline-none focus:ring-1 focus:ring-gta-yellow"
+              placeholder="Search by event title, keyword, or technology..."
+              className="w-full bg-luxury-carbon border border-white/10 py-3 pl-11 pr-4 text-xs font-sans text-luxury-white placeholder:text-luxury-dim focus:border-luxury-amber focus:outline-none"
             />
           </div>
 
           {/* Department Select */}
-          <div className="sm:col-span-3">
+          <div className="sm:col-span-4">
             <select
               value={selectedDept}
-              onChange={(e) => handleDeptSelect(e.target.value)}
-              className="w-full rounded-lg border border-gta-white/15 bg-gta-surface/80 py-2.5 px-3 text-sm text-gta-white focus:border-gta-yellow focus:outline-none"
+              onChange={(e) => {
+                setSelectedDept(e.target.value);
+                setDisplayCount(12);
+              }}
+              className="w-full bg-luxury-carbon border border-white/10 py-3 px-4 text-xs font-sans text-luxury-white focus:border-luxury-amber focus:outline-none"
             >
               {departmentsList.map((d) => (
-                <option key={d} value={d} className="bg-gta-night text-gta-white">
+                <option key={d} value={d} className="bg-luxury-obsidian text-luxury-white">
                   {d}
                 </option>
               ))}
             </select>
           </div>
-
-          {/* Sort Select */}
-          <div className="sm:col-span-3">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "default" | "prize" | "name")}
-              className="w-full rounded-lg border border-gta-white/15 bg-gta-surface/80 py-2.5 px-3 text-sm text-gta-white focus:border-gta-yellow focus:outline-none"
-            >
-              <option value="default" className="bg-gta-night text-gta-white">Sort: Mission Order</option>
-              <option value="prize" className="bg-gta-night text-gta-white">Sort: Highest Bounty</option>
-              <option value="name" className="bg-gta-night text-gta-white">Sort: Alphabetical</option>
-            </select>
-          </div>
         </div>
 
-        {/* Mission Cards Grid */}
+        {/* Editorial Events Grid */}
         {visibleMissions.length > 0 ? (
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
             {visibleMissions.map((mission) => (
               <MissionCard
                 key={mission.id}
@@ -180,38 +129,24 @@ export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps)
             ))}
           </div>
         ) : (
-          <div className="mt-16 rounded-xl border border-dashed border-gta-white/20 p-12 text-center">
-            <Crosshair className="mx-auto h-12 w-12 text-gta-yellow/50" />
-            <h3 className="mt-3 font-display text-2xl uppercase text-gta-white">
-              NO MISSIONS FOUND MATCHING TELEMETRY
+          <div className="mt-20 py-16 text-center border-t border-b border-white/10">
+            <h3 className="font-display text-2xl uppercase tracking-wider text-luxury-white">
+              NO MATCHING EVENTS FOUND
             </h3>
-            <p className="mt-1 text-sm text-gta-white/60">
-              Try adjusting your search terms, department filters, or clear all filters.
+            <p className="mt-2 text-xs text-luxury-muted font-sans font-light">
+              Refine your keyword search or reset department filters.
             </p>
-            <button
-              onClick={() => {
-                setSelectedCategory("all");
-                setSelectedDept("All Departments");
-                setSearchQuery("");
-              }}
-              className="interactive mt-4 rounded-md border border-gta-yellow px-4 py-2 font-display text-xs uppercase tracking-wider text-gta-yellow hover:bg-gta-yellow/10"
-            >
-              RESET TELEMETRY FILTERS
-            </button>
           </div>
         )}
 
         {/* Load More Button */}
         {filteredMissions.length > displayCount && (
-          <div className="mt-12 text-center">
+          <div className="mt-16 text-center">
             <button
-              onClick={() => {
-                sound.playClick();
-                setDisplayCount((prev) => prev + 12);
-              }}
-              className="interactive group rounded-md border border-gta-magenta/40 bg-gta-surface/80 px-8 py-3.5 font-display text-base uppercase tracking-wider text-gta-white transition-all hover:border-gta-yellow hover:text-gta-yellow hover:shadow-neonYellow"
+              onClick={() => setDisplayCount((prev) => prev + 12)}
+              className="px-8 py-3 rounded-full border border-white/20 font-display text-xs uppercase tracking-widest text-luxury-white hover:border-luxury-amber hover:text-luxury-amber transition-colors"
             >
-              LOAD MORE MISSIONS ({filteredMissions.length - displayCount} REMAINING)
+              VIEW MORE EVENTS ({filteredMissions.length - displayCount} REMAINING)
             </button>
           </div>
         )}

@@ -5,7 +5,7 @@
 :root {
   --font-bebas: 'Bebas Neue', sans-serif;
   --font-inter: 'Inter', sans-serif;
-  --bg-night: #10051C;
+  --bg-obsidian: #050505;
 }
 
 * {
@@ -14,120 +14,66 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: #10051C;
-  color: #F7F3F7;
+  background-color: #050505;
+  color: #F5F3F7;
   overflow-x: hidden;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #10051C;
-  color: #F7F3F7;
+  background-color: #050505;
+  color: #F5F3F7;
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Scrollbar */
+/* Luxury Minimal Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #10051C;
-  border-left: 1px solid rgba(217, 43, 255, 0.15);
+  background: #050505;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #D92BFF 0%, #7A20C8 100%);
-  border-radius: 4px;
+  background: #251D30;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #FF4FA3 0%, #E8FF4F 100%);
+  background: #483A5E;
 }
 
-/* Subtle GTA Scanline layer */
-.gta-scanlines {
-  background: linear-gradient(
-    rgba(18, 16, 26, 0) 50%, 
-    rgba(0, 0, 0, 0.25) 50%
-  ), linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 0.03),
-    rgba(0, 255, 0, 0.01),
-    rgba(0, 0, 255, 0.03)
-  );
-  background-size: 100% 3px, 6px 100%;
-  pointer-events: none;
+/* Editorial Hairline Borders */
+.border-hairline {
+  border-color: rgba(245, 243, 247, 0.08);
 }
 
-/* Tactical HUD clipped corners */
-.hud-corner {
-  clip-path: polygon(
-    0 12px,
-    12px 0,
-    calc(100% - 12px) 0,
-    100% 12px,
-    100% calc(100% - 12px),
-    calc(100% - 12px) 100%,
-    12px 100%,
-    0 calc(100% - 12px)
-  );
+.border-hairline-hover:hover {
+  border-color: rgba(245, 243, 247, 0.22);
 }
 
-.hud-corner-lg {
-  clip-path: polygon(
-    0 24px,
-    24px 0,
-    calc(100% - 24px) 0,
-    100% 24px,
-    100% calc(100% - 24px),
-    calc(100% - 24px) 100%,
-    24px 100%,
-    0 calc(100% - 24px)
-  );
+/* Subtle Film Grain */
+.film-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
 }
 
-.hud-badge-slant {
-  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+/* Automotive Asphalt Track Texture */
+.track-gradient {
+  background: radial-gradient(ellipse at 50% 90%, rgba(26, 18, 36, 0.6) 0%, rgba(5, 5, 5, 0.95) 70%, #050505 100%);
 }
 
-/* Glowing text effects */
-.text-glow-yellow {
-  text-shadow: 0 0 10px rgba(232, 255, 79, 0.6), 0 0 25px rgba(232, 255, 79, 0.3);
+/* Editorial Typography Tracking */
+.tracking-cinematic {
+  letter-spacing: 0.18em;
 }
 
-.text-glow-pink {
-  text-shadow: 0 0 12px rgba(255, 79, 163, 0.7), 0 0 30px rgba(217, 43, 255, 0.4);
-}
-
-.text-glow-magenta {
-  text-shadow: 0 0 12px rgba(217, 43, 255, 0.7), 0 0 35px rgba(122, 32, 200, 0.5);
-}
-
-/* Perspective Grid for Cyber/Synth feel */
-.cyber-grid {
-  background-image: 
-    linear-gradient(to right, rgba(217, 43, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(217, 43, 255, 0.1) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-/* Grain Noise */
-.subtle-grain {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
-}
-
-/* Noise overlay */
-.noise-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+.tracking-editorial {
+  letter-spacing: 0.28em;
 }

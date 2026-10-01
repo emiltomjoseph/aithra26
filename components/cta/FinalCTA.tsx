@@ -1,85 +1,70 @@
 "use client";
 
 import Image from "next/image";
-import { sound } from "@/lib/audio";
-import { ArrowRight, Flame, Shield, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface FinalCTAProps {
   onOpenRegister: () => void;
 }
 
 export default function FinalCTA({ onOpenRegister }: FinalCTAProps) {
-  const handleScrollToMissions = () => {
-    sound.playClick();
-    const elem = document.querySelector("#missions");
+  const handleScrollToEvents = () => {
+    const elem = document.querySelector("#events");
     if (elem) {
       elem.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-gta-night py-28 sm:py-36">
-      {/* Background Cinematic Night Highway Image */}
+    <section className="relative w-full bg-luxury-obsidian py-36 border-t border-white/10 overflow-hidden">
+      {/* Background Track Horizon Composite */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/brand/Background.png"
-          alt="Night City Environment"
+          src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80"
+          alt="Porsche on Dusk Track"
           fill
-          className="object-cover opacity-35"
+          className="object-cover opacity-20 grayscale contrast-125"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gta-night via-gta-night/70 to-gta-night" />
+        <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian via-luxury-obsidian/80 to-luxury-obsidian" />
       </div>
 
-      <div className="pointer-events-none absolute inset-0 gta-scanlines opacity-30 z-10" />
-
-      <div className="relative z-20 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
-        {/* Top Emblem */}
-        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-gta-yellow bg-gta-yellow/10 text-gta-yellow shadow-neonYellow">
-          <Flame className="h-7 w-7" />
+      <div className="relative z-10 mx-auto max-w-5xl px-6 sm:px-12 text-center">
+        <div className="inline-flex items-center gap-3 text-xs font-mono tracking-extreme uppercase text-luxury-amber mb-6">
+          <span>FINAL ADMISSION CALL</span>
+          <span className="opacity-40">•</span>
+          <span>AITHRA 2026</span>
         </div>
 
-        <span className="font-display text-base sm:text-lg uppercase tracking-widest text-gta-yellow">
-          FINAL CALL FOR OPERATORS
-        </span>
-
-        <h2 className="mt-4 font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tight text-gta-white">
-          READY TO <span className="text-gta-yellow text-glow-yellow">ENTER?</span>
+        <h2 className="font-display text-6xl sm:text-8xl md:text-9xl uppercase tracking-cinematic text-luxury-white leading-none">
+          THE GRID AWAITS.
         </h2>
 
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-3 font-display text-xl sm:text-2xl uppercase tracking-wider text-gta-pink">
-          <span>AITHRA 2026</span>
-          <span className="text-gta-white/40">•</span>
-          <span className="text-gta-white">30 — 31 OCTOBER</span>
-          <span className="text-gta-white/40">•</span>
-          <span className="text-gta-yellow">AMAL JYOTHI</span>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs font-mono tracking-widest uppercase text-luxury-muted">
+          <span>30 — 31 OCTOBER 2026</span>
+          <span>•</span>
+          <span>AMAL JYOTHI COLLEGE OF ENGINEERING</span>
+          <span>•</span>
+          <span className="text-luxury-amber">₹6,00,000+ BOUNTY</span>
         </div>
 
-        <p className="mt-6 max-w-2xl mx-auto text-sm sm:text-base text-gta-white/80 font-sans leading-relaxed">
-          The gates to Kerala&apos;s most immersive techfest open soon. Secure your mission credentials, access exclusive hackathons, and challenge for the ₹6,00,000+ bounty pool.
+        <p className="mt-6 max-w-xl mx-auto text-xs sm:text-sm font-sans text-luxury-muted font-light leading-relaxed">
+          Accreditation passes provide full access to all technical competitions, workshops, hackathons, and symposium tracks.
         </p>
 
-        {/* Action Buttons */}
+        {/* CTA Buttons */}
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
-            onClick={() => {
-              sound.playClick();
-              onOpenRegister();
-            }}
-            onMouseEnter={() => sound.playHover()}
-            className="interactive group relative w-full sm:w-auto rounded-md bg-gta-yellow px-10 py-4 font-display text-xl font-bold uppercase tracking-wider text-gta-night shadow-neonYellow transition-all duration-300 hover:bg-gta-yellow/90 hover:scale-105"
+            onClick={onOpenRegister}
+            className="w-full sm:w-auto px-8 py-4 rounded-full bg-luxury-white text-luxury-obsidian font-display text-sm uppercase tracking-widest font-bold transition-all duration-300 hover:scale-105 hover:bg-luxury-amber"
           >
-            <div className="flex items-center justify-center gap-2">
-              <span>REGISTER NOW</span>
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </div>
+            REGISTER CREDENTIALS NOW
           </button>
 
           <button
-            onClick={handleScrollToMissions}
-            onMouseEnter={() => sound.playHover()}
-            className="interactive w-full sm:w-auto rounded-md border border-gta-magenta/60 bg-gta-surface/80 px-8 py-4 font-display text-xl uppercase tracking-wider text-gta-white backdrop-blur-md transition-all duration-300 hover:border-gta-yellow hover:text-gta-yellow hover:bg-gta-surface"
+            onClick={handleScrollToEvents}
+            className="w-full sm:w-auto px-8 py-4 rounded-full border border-white/20 text-luxury-white font-display text-sm uppercase tracking-widest transition-colors duration-300 hover:border-luxury-amber hover:text-luxury-amber"
           >
-            EXPLORE MISSIONS
+            EXPLORE DIRECTORY
           </button>
         </div>
       </div>
