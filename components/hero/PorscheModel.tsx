@@ -201,4 +201,41 @@ export default function PorscheModel({ mouse, scrollProgress }: PorscheModelProp
   );
 }
 
+export function PorschePlaceholder({ mouse }: { mouse: { x: number; y: number } }) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame(() => {
+    if (ref.current) {
+      ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, -mouse.x * 0.14, 0.05);
+    }
+  });
+  return (
+    <group ref={ref} position={[0, 0, -10]} scale={[1.2, 1.2, 1.2]}>
+      {/* Shadow */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
+        <planeGeometry args={[2.8, 5.2]} />
+        <meshBasicMaterial color="#000000" transparent opacity={0.7} depthWrite={false} />
+      </mesh>
+      {/* Low GT Chassis */}
+      <mesh position={[0, 0.35, 0]}>
+        <boxGeometry args={[1.9, 0.45, 4.4]} />
+        <meshStandardMaterial color="#14111a" roughness={0.2} metalness={0.8} />
+      </mesh>
+      {/* Cabin */}
+      <mesh position={[0, 0.72, -0.3]}>
+        <boxGeometry args={[1.35, 0.4, 2.0]} />
+        <meshStandardMaterial color="#08050e" roughness={0.1} metalness={0.9} />
+      </mesh>
+      {/* Headlights */}
+      <mesh position={[-0.7, 0.4, 2.2]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" />
+      </mesh>
+      <mesh position={[0.7, 0.4, 2.2]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" />
+      </mesh>
+    </group>
+  );
+}
+
 useGLTF.preload("/models/porsche.glb");

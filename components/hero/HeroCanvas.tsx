@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import PorscheModel from "./PorscheModel";
+import PorscheModel, { PorschePlaceholder } from "./PorscheModel";
 import RacingCircuit from "./RacingCircuit";
 import CircuitLighting from "./CircuitLighting";
 
@@ -65,7 +65,9 @@ export default function HeroCanvas({ mouse, scrollProgress }: HeroCanvasProps) {
         <RoadCamera mouse={mouse} scrollProgress={scrollProgress} />
 
         {/* Porsche 911 GT3 RS with Physics Steering */}
-        <PorscheModel mouse={mouse} scrollProgress={scrollProgress} />
+        <Suspense fallback={<PorschePlaceholder mouse={mouse} />}>
+          <PorscheModel mouse={mouse} scrollProgress={scrollProgress} />
+        </Suspense>
 
         {/* Realistic Racing Circuit */}
         <RacingCircuit />
