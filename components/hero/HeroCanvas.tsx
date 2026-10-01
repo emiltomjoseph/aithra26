@@ -16,21 +16,20 @@ interface HeroCanvasProps {
 function RoadCamera({ mouse, scrollProgress }: { mouse: { x: number; y: number }; scrollProgress: number }) {
   const cameraRef = useRef<{ camX: number; camY: number; camZ: number }>({
     camX: 0,
-    camY: 0.8,
-    camZ: 4.8,
+    camY: 0.92,
+    camZ: 4.6,
   });
 
   useFrame(({ camera }, delta) => {
     const c = cameraRef.current;
 
-    // Subtle 5-10% camera parallax based on mouse
+    // Subtle parallax tracking cursor
     const targetCamX = mouse.x * 0.45;
-    const targetCamY = 0.75 + mouse.y * 0.18;
+    const targetCamY = 0.9 + mouse.y * 0.16;
 
-    // As user scrolls past 0.8, camera lifts slightly and tilts down
-    let targetCamZ = 4.8;
-    if (scrollProgress > 0.8) {
-      targetCamZ = 4.8 - (scrollProgress - 0.8) * 4.0;
+    let targetCamZ = 4.6;
+    if (scrollProgress > 0.6) {
+      targetCamZ = 4.6 - (scrollProgress - 0.6) * 3.2;
     }
 
     c.camX = THREE.MathUtils.lerp(c.camX, targetCamX, delta * 3.5);
@@ -39,8 +38,8 @@ function RoadCamera({ mouse, scrollProgress }: { mouse: { x: number; y: number }
 
     camera.position.set(c.camX, c.camY, c.camZ);
 
-    // Look slightly ahead at the road
-    camera.lookAt(c.camX * 0.3, 0.45, -6);
+    // Look directly at the car's front aerodynamic chassis
+    camera.lookAt(c.camX * 0.2, 0.52, 0.2);
   });
 
   return null;
@@ -50,7 +49,7 @@ export default function HeroCanvas({ mouse, scrollProgress }: HeroCanvasProps) {
   return (
     <div className="absolute inset-0 h-full w-full pointer-events-none overflow-hidden">
       <Canvas
-        camera={{ position: [0, 0.8, 4.8], fov: 32 }}
+        camera={{ position: [0, 0.92, 4.6], fov: 34 }}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         dpr={[1, 1.5]}
         shadows

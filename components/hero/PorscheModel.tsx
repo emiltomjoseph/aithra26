@@ -21,7 +21,7 @@ export default function PorscheModel({ mouse, scrollProgress }: PorscheModelProp
     currentYaw: 0,
     currentRoll: 0,
     currentPitch: 0,
-    currentZ: -12,
+    currentZ: 0.2,
     currentX: 0,
     wheelSpin: 0,
   });
@@ -124,16 +124,14 @@ export default function PorscheModel({ mouse, scrollProgress }: PorscheModelProp
     p.currentPitch = THREE.MathUtils.lerp(p.currentPitch, targetPitch, delta * 4);
 
     // 3. Forward Translation driven by Scroll Progress
-    // Distance (scroll = 0): Z = -14
-    // Midground (scroll = 0.5): Z = -4
-    // Foreground (scroll = 0.85): Z = 0.4
-    // Exit bank (scroll > 0.85): car slides past camera
-    let targetZ = -14 + scrollProgress * 15.5;
-    let targetX = mouse.x * 0.4;
+    // Start foreground at Z = 0.2 (prominent, heroic, close-up)
+    let targetZ = 0.2 + scrollProgress * 12.0;
+    let targetX = mouse.x * 0.35;
 
-    if (scrollProgress > 0.85) {
-      const exitProgress = (scrollProgress - 0.85) / 0.15;
-      targetX += exitProgress * 3.2; // Bank to side as it passes camera
+    if (scrollProgress > 0.6) {
+      const exitProgress = (scrollProgress - 0.6) / 0.4;
+      targetX += exitProgress * 3.8; // Bank to side as it exits
+      targetZ += exitProgress * 6.0;
     }
 
     p.currentZ = THREE.MathUtils.lerp(p.currentZ, targetZ, delta * 4);
@@ -154,7 +152,7 @@ export default function PorscheModel({ mouse, scrollProgress }: PorscheModelProp
   });
 
   return (
-    <group ref={carGroupRef} position={[0, 0, -14]} scale={[1.2, 1.2, 1.2]}>
+    <group ref={carGroupRef} position={[0, 0, 0.2]} scale={[1.35, 1.35, 1.35]}>
       {/* Ground Contact Shadow Plane */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
         <planeGeometry args={[2.8, 5.2]} />
@@ -209,7 +207,7 @@ export function PorschePlaceholder({ mouse }: { mouse: { x: number; y: number } 
     }
   });
   return (
-    <group ref={ref} position={[0, 0, -10]} scale={[1.2, 1.2, 1.2]}>
+    <group ref={ref} position={[0, 0, 0.2]} scale={[1.35, 1.35, 1.35]}>
       {/* Shadow */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
         <planeGeometry args={[2.8, 5.2]} />
