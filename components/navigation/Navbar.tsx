@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "@/components/navigation/MobileMenu";
 import BorderBeamButton from "@/components/ui/BorderBeamButton";
-import { Menu, ArrowRight, Radio } from "lucide-react";
+import { Menu, ArrowRight } from "lucide-react";
 import { clsx } from "clsx";
 
 interface NavbarProps {
@@ -21,13 +21,12 @@ export default function Navbar({ onOpenRegister }: NavbarProps) {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
 
-      // Detect active section
-      const sections = ["about", "events", "experience", "archives", "contact"];
+      const sections = ["about", "departments", "events", "experience", "archives", "contact"];
       for (const s of sections) {
         const el = document.getElementById(s);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= 200 && rect.bottom >= 200) {
+          if (rect.top <= 250 && rect.bottom >= 250) {
             setActiveSection(s);
             break;
           }
@@ -38,14 +37,6 @@ export default function Navbar({ onOpenRegister }: NavbarProps) {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const navLinks = [
-    { name: "ABOUT", href: "#about", id: "about" },
-    { name: "EVENTS", href: "#events", id: "events" },
-    { name: "EXPERIENCE", href: "#experience", id: "experience" },
-    { name: "ARCHIVES", href: "#archives", id: "archives" },
-    { name: "CONTACT", href: "#contact", id: "contact" },
-  ];
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith("#")) {
@@ -62,71 +53,116 @@ export default function Navbar({ onOpenRegister }: NavbarProps) {
       <header
         className={clsx(
           "fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-4 sm:px-8 transition-all duration-500",
-          isScrolled ? "py-3" : "py-6"
+          isScrolled ? "py-2.5" : "py-5"
         )}
       >
-        {/* Floating Dynamic Island / Luxury Pill Dock */}
+        {/* Reference Image 5: Bilateral Luxury Centered-Logo Dock */}
         <div
           className={clsx(
-            "flex items-center justify-between w-full max-w-6xl rounded-full px-5 py-2.5 transition-all duration-500",
-            "bg-[#0A0710]/85 backdrop-blur-2xl border border-white/12 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.85)]",
-            isScrolled && "border-white/20 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.95),0_0_20px_rgba(255,122,69,0.08)]"
+            "flex items-center justify-between w-full max-w-5xl rounded-full px-6 py-2 transition-all duration-500",
+            "bg-[#08050E]/85 backdrop-blur-2xl border border-white/10 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.85)]",
+            isScrolled && "border-white/20 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.95),0_0_25px_rgba(0,240,255,0.08)]"
           )}
         >
-          {/* Brand Identity: Official AITHRA Logo */}
-          <Link href="/" className="group flex items-center gap-3 select-none">
-            <Image
-              src="/brand/aithra white.png"
-              alt="AITHRA 2026"
-              width={105}
-              height={30}
-              priority
-              className="h-5 sm:h-6 w-auto object-contain transition-opacity duration-300 group-hover:opacity-85"
-            />
-            <span className="hidden lg:inline-flex items-center gap-2 border-l border-white/15 pl-3 font-mono text-[9px] uppercase tracking-widest text-luxury-muted">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-              </span>
-              <span>GRID LIVE // 30-31 OCT</span>
+          {/* Left Navigation Links */}
+          <nav className="hidden md:flex items-center gap-6">
+            <a
+              href="#about"
+              onClick={(e) => handleLinkClick(e, "#about")}
+              className={clsx(
+                "font-display text-xs uppercase tracking-widest transition-colors duration-200 select-none",
+                activeSection === "about"
+                  ? "text-luxury-white font-bold"
+                  : "text-luxury-muted hover:text-luxury-white"
+              )}
+            >
+              ABOUT
+            </a>
+            <a
+              href="#departments"
+              onClick={(e) => handleLinkClick(e, "#departments")}
+              className={clsx(
+                "font-display text-xs uppercase tracking-widest transition-colors duration-200 select-none",
+                activeSection === "departments"
+                  ? "text-luxury-white font-bold"
+                  : "text-luxury-muted hover:text-luxury-white"
+              )}
+            >
+              DEPARTMENTS
+            </a>
+            <a
+              href="#events"
+              onClick={(e) => handleLinkClick(e, "#events")}
+              className={clsx(
+                "font-display text-xs uppercase tracking-widest transition-colors duration-200 select-none",
+                activeSection === "events"
+                  ? "text-luxury-white font-bold"
+                  : "text-luxury-muted hover:text-luxury-white"
+              )}
+            >
+              EVENTS
+            </a>
+          </nav>
+
+          {/* Centered Brand Emblem / Logo (Reference Image 5) */}
+          <Link href="/" className="group flex flex-col items-center justify-center select-none py-1">
+            <div className="relative flex items-center justify-center">
+              {/* Subtle Ambient Wing Glow */}
+              <div className="pointer-events-none absolute -inset-2 rounded-full bg-cyan-500/10 blur-md group-hover:bg-cyan-500/20 transition-colors" />
+              <Image
+                src="/brand/aithra white.png"
+                alt="AITHRA 2026"
+                width={120}
+                height={34}
+                priority
+                className="h-6 sm:h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <span className="font-mono text-[8px] uppercase tracking-extreme text-cyan-400/80 -mt-0.5">
+              NATIONAL LEVEL TECHFEST
             </span>
           </Link>
 
-          {/* Desktop Navigation Links with Animated Pill Underlay */}
-          <nav className="hidden md:flex items-center gap-1 bg-black/40 rounded-full p-1 border border-white/5">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.id;
-              return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleLinkClick(e, link.href)}
-                  className={clsx(
-                    "relative px-4 py-1.5 rounded-full font-display text-[11px] uppercase tracking-widest transition-all duration-300 select-none",
-                    isActive
-                      ? "text-luxury-white font-bold bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
-                      : "text-luxury-muted hover:text-luxury-white hover:bg-white/5"
-                  )}
-                >
-                  {link.name}
-                </a>
-              );
-            })}
-          </nav>
+          {/* Right Navigation Links & Accredit Trigger */}
+          <div className="flex items-center gap-6">
+            <nav className="hidden md:flex items-center gap-6">
+              <a
+                href="#experience"
+                onClick={(e) => handleLinkClick(e, "#experience")}
+                className={clsx(
+                  "font-display text-xs uppercase tracking-widest transition-colors duration-200 select-none",
+                  activeSection === "experience"
+                    ? "text-luxury-white font-bold"
+                    : "text-luxury-muted hover:text-luxury-white"
+                )}
+              >
+                GALLERY
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => handleLinkClick(e, "#contact")}
+                className={clsx(
+                  "font-display text-xs uppercase tracking-widest transition-colors duration-200 select-none",
+                  activeSection === "contact"
+                    ? "text-luxury-white font-bold"
+                    : "text-luxury-muted hover:text-luxury-white"
+                )}
+              >
+                CONTACT
+              </a>
+            </nav>
 
-          {/* Right Action: BorderBeam Button */}
-          <div className="flex items-center gap-3">
             <BorderBeamButton
               onClick={onOpenRegister}
               size="sm"
               glowColor="amber"
-              className="hidden sm:inline-flex"
+              className="text-[10px] hidden sm:inline-flex"
             >
               <span>ACCREDIT</span>
               <ArrowRight className="h-3 w-3" />
             </BorderBeamButton>
 
-            {/* Mobile Hamburger */}
+            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="flex md:hidden p-1.5 text-luxury-white hover:text-luxury-amber transition-colors rounded-full bg-white/5 border border-white/10"

@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import HeroFallback from "@/components/hero/HeroFallback";
 import BorderBeamButton from "@/components/ui/BorderBeamButton";
 import MetalButton from "@/components/ui/MetalButton";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { siteConfig } from "@/data/site";
+import { ChevronDown, Sparkles } from "lucide-react";
 
 // Dynamically import 3D WebGL Canvas
 const HeroCanvas = dynamic(() => import("./HeroCanvas"), {
@@ -23,6 +23,14 @@ export default function Hero({ onOpenRegister }: HeroProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
 
+  // Live countdown state for bottom capsule HUD (Ref Image 5)
+  const [timeLeft, setTimeLeft] = useState({
+    days: "00",
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
+  });
+
   useEffect(() => {
     // 1. Mouse movement tracking (-1 to +1)
     const handleMouseMove = (e: MouseEvent) => {
@@ -32,7 +40,7 @@ export default function Hero({ onOpenRegister }: HeroProps) {
       setMouse({ x, y });
     };
 
-    // 2. Scroll progression tracking (0 to 1 over hero height)
+    // 2. Scroll progression tracking
     const handleScroll = () => {
       if (!heroRef.current) return;
       const rect = heroRef.current.getBoundingClientRect();
@@ -44,10 +52,34 @@ export default function Hero({ onOpenRegister }: HeroProps) {
       setScrollProgress(progress);
     };
 
+    // 3. Live countdown calculation
+    const target = new Date(siteConfig.targetDateISO).getTime();
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const diff = target - now;
+      if (diff <= 0) return;
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      setTimeLeft({
+        days: String(d).padStart(2, "0"),
+        hours: String(h).padStart(2, "0"),
+        minutes: String(m).padStart(2, "0"),
+        seconds: String(s).padStart(2, "0"),
+      });
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
+      clearInterval(interval);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
     };
@@ -79,37 +111,53 @@ export default function Hero({ onOpenRegister }: HeroProps) {
           <HeroCanvas mouse={mouse} scrollProgress={scrollProgress} />
         </div>
 
+        {/* Perforated Dot-Matrix Carbon Texture (Reference Image 5) */}
+        <div
+          className="pointer-events-none absolute inset-0 z-10 opacity-30"
+          style={{
+            backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+
         {/* Subtle Vignette & Film Grain */}
         <div className="pointer-events-none absolute inset-0 z-10 bg-radial-vignette opacity-70" />
         <div className="pointer-events-none absolute inset-0 z-10 film-grain" />
 
         {/* Top Spacer */}
-        <div className="relative z-20 pt-24 px-6 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-between text-[11px] font-mono tracking-widest text-luxury-muted">
-          <span>KANJIRAPPALLY CIRCUIT // SECTOR 09</span>
+        <div className="relative z-20 pt-28 px-6 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-between text-[11px] font-mono tracking-widest text-luxury-muted">
+          <span className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            KANJIRAPPALLY CIRCUIT // SECTOR 09
+          </span>
           <span className="hidden sm:inline">30 — 31 OCTOBER 2026</span>
         </div>
 
-        {/* Center Minimal Editorial Typography */}
-        <div className="relative z-20 mx-auto max-w-5xl px-6 text-center transition-opacity duration-500"
+        {/* Center Headline Typography (Reference Image 5 Architecture) */}
+        <div
+          className="relative z-20 mx-auto max-w-5xl px-6 text-center transition-opacity duration-500 my-auto"
           style={{ opacity: Math.max(0, 1 - scrollProgress * 1.8) }}
         >
           {/* Subtitle Line */}
-          <div className="inline-flex items-center gap-3 text-[11px] sm:text-xs font-mono tracking-extreme uppercase text-luxury-amber">
-            <span>AMAL JYOTHI COLLEGE OF ENGINEERING</span>
-            <span className="opacity-40">•</span>
-            <span>FLAGSHIP TECHFEST</span>
+          <div className="inline-flex items-center gap-2 text-[10px] sm:text-xs font-mono tracking-extreme uppercase text-cyan-400 mb-2">
+            <Sparkles className="h-3 w-3 text-cyan-400" />
+            <span>AMAL JYOTHI COLLEGE OF ENGINEERING • FLAGSHIP TECHFEST</span>
           </div>
 
-          {/* Main Display Headline */}
-          <h1 className="mt-4 font-display text-6xl sm:text-8xl md:text-9xl uppercase tracking-cinematic text-luxury-white leading-none">
-            ENTER THE FUTURE.
+          {/* Reference Image 5: Display Headline */}
+          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-cinematic text-luxury-white leading-none">
+            <span className="block">INNOVATION</span>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-cyan-500 drop-shadow-[0_0_35px_rgba(0,240,255,0.45)]">
+              BECOMES
+            </span>
+            <span className="block">THE FUTURE.</span>
           </h1>
 
-          <p className="mt-3 text-xs sm:text-sm font-sans text-luxury-muted max-w-lg mx-auto tracking-wide leading-relaxed">
-            Where engineering mastery meets the thrill of the open circuit. Experience Kerala&apos;s most prestigious technology festival.
+          <p className="mt-4 text-xs sm:text-sm font-sans text-luxury-muted max-w-lg mx-auto tracking-wide leading-relaxed font-light">
+            Where automotive precision meets engineering brilliance. Kerala&apos;s apex technological gathering at Amal Jyothi College of Engineering.
           </p>
 
-          {/* Cult UI Luxury Action Triggers */}
+          {/* Action Triggers */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <BorderBeamButton
               onClick={onOpenRegister}
@@ -131,14 +179,55 @@ export default function Hero({ onOpenRegister }: HeroProps) {
           </div>
         </div>
 
-        {/* Bottom Scroll Cue */}
-        <div className="relative z-20 pb-8 px-6 text-center">
+        {/* Reference Image 5: Docked Futuristic Glowing Capsule Pill Countdown HUD */}
+        <div className="relative z-20 pb-8 px-6 flex flex-col items-center gap-4">
+          <div className="flex items-center gap-5 sm:gap-8 rounded-full px-6 sm:px-10 py-3 bg-[#08050E]/85 backdrop-blur-2xl border border-cyan-500/35 shadow-[0_0_30px_rgba(0,240,255,0.18)]">
+            {/* Days */}
+            <div className="text-center">
+              <div className="font-display text-2xl sm:text-3xl font-bold text-white tracking-wider leading-none">
+                {timeLeft.days}
+              </div>
+              <div className="text-[9px] font-mono tracking-widest text-cyan-400 mt-1">DAYS</div>
+            </div>
+
+            <span className="text-cyan-400/80 font-display text-xl sm:text-2xl -mt-3 select-none">:</span>
+
+            {/* Hours */}
+            <div className="text-center">
+              <div className="font-display text-2xl sm:text-3xl font-bold text-white tracking-wider leading-none">
+                {timeLeft.hours}
+              </div>
+              <div className="text-[9px] font-mono tracking-widest text-cyan-400 mt-1">HOURS</div>
+            </div>
+
+            <span className="text-cyan-400/80 font-display text-xl sm:text-2xl -mt-3 select-none">:</span>
+
+            {/* Minutes */}
+            <div className="text-center">
+              <div className="font-display text-2xl sm:text-3xl font-bold text-white tracking-wider leading-none">
+                {timeLeft.minutes}
+              </div>
+              <div className="text-[9px] font-mono tracking-widest text-cyan-400 mt-1">MINUTES</div>
+            </div>
+
+            <span className="text-cyan-400/80 font-display text-xl sm:text-2xl -mt-3 select-none">:</span>
+
+            {/* Seconds */}
+            <div className="text-center">
+              <div className="font-display text-2xl sm:text-3xl font-bold text-cyan-400 tracking-wider leading-none animate-pulse">
+                {timeLeft.seconds}
+              </div>
+              <div className="text-[9px] font-mono tracking-widest text-cyan-400 mt-1">SECONDS</div>
+            </div>
+          </div>
+
+          {/* Scroll Cue */}
           <button
             onClick={handleScrollToNext}
-            className="group inline-flex flex-col items-center gap-1 text-[10px] font-mono uppercase tracking-extreme text-luxury-dim hover:text-luxury-white transition-colors"
+            className="group inline-flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-extreme text-luxury-dim hover:text-luxury-white transition-colors"
           >
-            <span>SCROLL TO ADVANCE</span>
-            <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:translate-y-1" />
+            <span>SCROLL TO DISCOVER</span>
+            <ChevronDown className="h-3 w-3 transition-transform group-hover:translate-y-0.5" />
           </button>
         </div>
       </div>

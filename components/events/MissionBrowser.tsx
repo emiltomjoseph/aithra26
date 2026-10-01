@@ -9,13 +9,27 @@ import { Search, SlidersHorizontal } from "lucide-react";
 
 interface MissionBrowserProps {
   onAcceptMission: (mission: MissionEvent) => void;
+  selectedDepartment?: string;
+  onDepartmentChange?: (dept: string) => void;
 }
 
-export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps) {
+export default function MissionBrowser({
+  onAcceptMission,
+  selectedDepartment,
+  onDepartmentChange,
+}: MissionBrowserProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedDept, setSelectedDept] = useState<string>("All Departments");
+  const [localDept, setLocalDept] = useState<string>("All Departments");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [displayCount, setDisplayCount] = useState<number>(12);
+
+  const selectedDept = selectedDepartment !== undefined ? selectedDepartment : localDept;
+  const setSelectedDept = (dept: string) => {
+    setLocalDept(dept);
+    if (onDepartmentChange) {
+      onDepartmentChange(dept);
+    }
+  };
 
   const filterButtonItems = useMemo(() => {
     return categoriesList.map((cat) => ({

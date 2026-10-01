@@ -5,6 +5,7 @@ import Navbar from "@/components/navigation/Navbar";
 import Hero from "@/components/hero/Hero";
 import AboutSection from "@/components/about/AboutSection";
 import StatsHUD from "@/components/stats/StatsHUD";
+import DepartmentsSection from "@/components/departments/DepartmentsSection";
 import MissionBrowser from "@/components/events/MissionBrowser";
 import ExperienceDistricts from "@/components/experience/ExperienceDistricts";
 import GallerySection from "@/components/gallery/GallerySection";
@@ -17,6 +18,7 @@ import { MissionEvent } from "@/data/events";
 export default function HomePage() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<MissionEvent | null>(null);
+  const [selectedDept, setSelectedDept] = useState<string>("All Departments");
 
   const handleOpenGeneralRegister = () => {
     setSelectedEvent(null);
@@ -30,45 +32,52 @@ export default function HomePage() {
 
   return (
     <div className="relative min-h-screen bg-luxury-obsidian text-luxury-white">
-      {/* Minimal Top Navigation */}
+      {/* Reference Image 5: Bilateral Centered-Logo Navigation */}
       <Navbar onOpenRegister={handleOpenGeneralRegister} />
 
-      {/* Main Continuous Editorial Experience */}
+      {/* Main Continuous Experience Following Reference Layout */}
       <main className="relative flex flex-col w-full">
-        {/* 01. Hero: Porsche 911 GT3 RS on Racing Circuit */}
+        {/* 01. Hero: Display Headline + 3D Car + Docked Capsule Countdown HUD (Ref Image 5) */}
         <Hero onOpenRegister={handleOpenGeneralRegister} />
 
-        {/* 02. Editorial Introduction */}
+        {/* 02. Editorial About: Halftone Header + Narrative + Blueprint + Campus Aerial (Ref Images 1, 3, 4) */}
         <AboutSection />
 
-        {/* 03. The Metrics */}
+        {/* 03. Festival Telemetry Metrics */}
         <StatsHUD />
 
-        {/* 04. Event Directory */}
-        <MissionBrowser onAcceptMission={handleAcceptEvent} />
+        {/* 04. Dedicated DEPARTMENTS Section with 3-Column Grid (Ref Image 2) */}
+        <DepartmentsSection onSelectDepartment={(dept) => setSelectedDept(dept)} />
 
-        {/* 05. Featured Arenas & Masterclasses */}
+        {/* 05. Event Directory with 3D Cult UI ShiftCards */}
+        <MissionBrowser
+          onAcceptMission={handleAcceptEvent}
+          selectedDepartment={selectedDept}
+          onDepartmentChange={setSelectedDept}
+        />
+
+        {/* 06. Featured Arenas & Masterclasses */}
         <ExperienceDistricts onOpenRegister={handleOpenGeneralRegister} />
 
-        {/* 06. Visual Archives */}
+        {/* 07. Visual Archives */}
         <GallerySection />
 
-        {/* 07. Precision Chronometer */}
+        {/* 08. Precision Chronometer Countdown */}
         <CountdownHUD />
 
-        {/* 08. Final Call */}
+        {/* 09. Final Call to the Grid */}
         <FinalCTA onOpenRegister={handleOpenGeneralRegister} />
       </main>
 
-      {/* Footer */}
+      {/* Official Footer with AJCE Students' Council Credentials */}
       <Footer />
 
-      {/* Accreditation Modal */}
+      {/* Official Accreditation Modal */}
       <RegistrationModal
         isOpen={isRegisterOpen}
         onClose={() => setIsRegisterOpen(false)}
-        defaultMissionTitle={selectedEvent?.title}
-        defaultMissionCode={selectedEvent?.registrationCode}
+        defaultMissionTitle={selectedEvent ? selectedEvent.title : undefined}
+        defaultMissionCode={selectedEvent ? selectedEvent.registrationCode : undefined}
       />
     </div>
   );
