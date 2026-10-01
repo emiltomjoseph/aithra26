@@ -7,6 +7,9 @@ import { MissionEvent } from "@/data/events";
 import RegistrationModal from "@/components/ui/RegistrationModal";
 import Navbar from "@/components/navigation/Navbar";
 import Footer from "@/components/footer/Footer";
+import BorderBeam from "@/components/ui/BorderBeam";
+import BorderBeamButton from "@/components/ui/BorderBeamButton";
+import MetalButton from "@/components/ui/MetalButton";
 import {
   ArrowLeft,
   Calendar,
@@ -15,6 +18,8 @@ import {
   Users,
   CheckCircle,
   ExternalLink,
+  Trophy,
+  Ticket,
 } from "lucide-react";
 
 interface MissionDetailClientProps {
@@ -26,11 +31,11 @@ export default function MissionDetailClient({ mission }: MissionDetailClientProp
 
   return (
     <div className="min-h-screen bg-luxury-obsidian text-luxury-white">
-      {/* Top Navbar */}
+      {/* Top Floating Dynamic Island Navbar */}
       <Navbar onOpenRegister={() => setIsRegisterOpen(true)} />
 
       {/* Main Content */}
-      <main className="relative pt-32 pb-24">
+      <main className="relative pt-36 pb-24">
         <div className="relative mx-auto max-w-5xl px-6 sm:px-12">
           {/* Breadcrumb Back Link */}
           <div className="mb-8 border-b border-white/10 pb-4">
@@ -44,9 +49,10 @@ export default function MissionDetailClient({ mission }: MissionDetailClientProp
           </div>
 
           {/* Editorial Dossier Article */}
-          <article className="border border-white/10 bg-luxury-carbon overflow-hidden">
+          <article className="relative overflow-hidden rounded-2xl border border-white/12 bg-gradient-to-b from-[#130E1C] via-[#0B0812] to-[#050408] shadow-[0_24px_80px_rgba(0,0,0,0.9)]">
             {/* High-Resolution Hero Banner */}
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-luxury-obsidian">
+              <BorderBeam size={220} duration={9} colorFrom="#FF7A45" colorTo="#9A4BFF" />
               <Image
                 src={mission.image}
                 alt={mission.title}
@@ -54,7 +60,7 @@ export default function MissionDetailClient({ mission }: MissionDetailClientProp
                 priority
                 className="object-cover grayscale contrast-125"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-luxury-carbon via-luxury-carbon/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B0812] via-[#0B0812]/50 to-transparent" />
 
               {/* Title & Category In Overlay */}
               <div className="absolute bottom-8 left-8 right-8">
@@ -140,7 +146,8 @@ export default function MissionDetailClient({ mission }: MissionDetailClientProp
               {/* Bounty & Fee */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-b border-white/10 py-8">
                 <div>
-                  <span className="font-mono text-xs uppercase tracking-widest text-luxury-dim">
+                  <span className="font-mono text-xs uppercase tracking-widest text-luxury-dim flex items-center gap-1.5">
+                    <Trophy className="h-3.5 w-3.5 text-luxury-amber" />
                     PRIZE BOUNTY
                   </span>
                   <div className="mt-1 font-display text-4xl sm:text-5xl font-bold text-luxury-white">
@@ -149,7 +156,8 @@ export default function MissionDetailClient({ mission }: MissionDetailClientProp
                 </div>
 
                 <div>
-                  <span className="font-mono text-xs uppercase tracking-widest text-luxury-dim">
+                  <span className="font-mono text-xs uppercase tracking-widest text-luxury-dim flex items-center gap-1.5">
+                    <Ticket className="h-3.5 w-3.5 text-luxury-violet" />
                     REGISTRATION FEE
                   </span>
                   <div className="mt-1 font-display text-4xl sm:text-5xl font-bold text-luxury-white">
@@ -158,24 +166,32 @@ export default function MissionDetailClient({ mission }: MissionDetailClientProp
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Cult UI Action Buttons */}
               <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-                <button
+                <BorderBeamButton
                   onClick={() => setIsRegisterOpen(true)}
-                  className="w-full sm:flex-1 py-4 rounded-full bg-luxury-white text-luxury-obsidian font-display text-xs uppercase tracking-widest font-bold hover:bg-luxury-amber transition-colors"
+                  size="lg"
+                  glowColor="amber"
+                  className="w-full sm:flex-1"
                 >
                   REGISTER FOR THIS EVENT
-                </button>
+                </BorderBeamButton>
 
                 {mission.registrationUrl && (
                   <a
                     href={mission.registrationUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 border border-white/20 px-8 py-4 rounded-full font-display text-xs uppercase tracking-widest text-luxury-white hover:border-luxury-amber hover:text-luxury-amber transition-colors"
+                    className="w-full sm:w-auto"
                   >
-                    <span>AJCE PORTAL DIRECT</span>
-                    <ExternalLink className="h-3.5 w-3.5" />
+                    <MetalButton
+                      variant="titanium"
+                      size="lg"
+                      className="w-full"
+                    >
+                      <span>AJCE PORTAL DIRECT</span>
+                      <ExternalLink className="h-3.5 w-3.5" />
+                    </MetalButton>
                   </a>
                 )}
               </div>

@@ -12,6 +12,8 @@
   "dependencies": {
     "@react-three/drei": "^9.114.0",
     "@react-three/fiber": "^8.17.10",
+    "@types/animejs": "^3.1.13",
+    "animejs": "^4.5.0",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "lenis": "^1.1.14",

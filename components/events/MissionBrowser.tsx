@@ -3,7 +3,9 @@
 import { useState, useMemo } from "react";
 import { missionEvents, categoriesList, departmentsList, MissionEvent } from "@/data/events";
 import MissionCard from "@/components/events/MissionCard";
-import { Search } from "lucide-react";
+import GradientButtonGroup from "@/components/ui/GradientButtonGroup";
+import MetalButton from "@/components/ui/MetalButton";
+import { Search, SlidersHorizontal } from "lucide-react";
 
 interface MissionBrowserProps {
   onAcceptMission: (mission: MissionEvent) => void;
@@ -14,6 +16,14 @@ export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps)
   const [selectedDept, setSelectedDept] = useState<string>("All Departments");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [displayCount, setDisplayCount] = useState<number>(12);
+
+  const filterButtonItems = useMemo(() => {
+    return categoriesList.map((cat) => ({
+      id: cat.id,
+      label: cat.id === "all" ? "ALL DISCIPLINES" : cat.label.replace("MISSIONS", "EVENTS"),
+      count: cat.count,
+    }));
+  }, []);
 
   const filteredMissions = useMemo(() => {
     return missionEvents.filter((m) => {
@@ -55,38 +65,27 @@ export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps)
             </h2>
           </div>
 
-          <div className="font-mono text-xs text-luxury-muted uppercase tracking-wider">
+          <div className="font-mono text-xs text-luxury-muted uppercase tracking-wider flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-luxury-amber animate-pulse" />
             SHOWING {visibleMissions.length} OF {missionEvents.length} VERIFIED ENTRIES
           </div>
         </div>
 
-        {/* Filter Bar: Clean Editorial Category Tabs */}
-        <div className="mt-10 flex flex-wrap items-center gap-6 border-b border-white/10 pb-6">
-          {categoriesList.map((cat) => {
-            const isActive = selectedCategory === cat.id;
-            const label = cat.id === "all" ? "ALL DISCIPLINES" : cat.label.replace("MISSIONS", "EVENTS");
-            return (
-              <button
-                key={cat.id}
-                onClick={() => {
-                  setSelectedCategory(cat.id);
-                  setDisplayCount(12);
-                }}
-                className={`font-display text-xs uppercase tracking-widest transition-colors duration-200 ${
-                  isActive
-                    ? "text-luxury-white border-b-2 border-luxury-amber pb-1"
-                    : "text-luxury-muted hover:text-luxury-white"
-                }`}
-              >
-                {label} ({cat.count})
-              </button>
-            );
-          })}
+        {/* Cult UI: Gradient Button Group for Category Navigation */}
+        <div className="mt-10 overflow-x-auto pb-2 flex justify-start sm:justify-center">
+          <GradientButtonGroup
+            items={filterButtonItems}
+            activeId={selectedCategory}
+            onChange={(id) => {
+              setSelectedCategory(id);
+              setDisplayCount(12);
+            }}
+          />
         </div>
 
         {/* Secondary Search & Department Filters */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-12 gap-4">
-          {/* Search Input */}
+          {/* Search Input with Acrylic Dark Finish */}
           <div className="sm:col-span-8 relative">
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-luxury-dim" />
             <input
@@ -94,19 +93,20 @@ export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps)
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by event title, keyword, or technology..."
-              className="w-full bg-luxury-carbon border border-white/10 py-3 pl-11 pr-4 text-xs font-sans text-luxury-white placeholder:text-luxury-dim focus:border-luxury-amber focus:outline-none"
+              className="w-full bg-[#0C0913]/90 border border-white/12 rounded-xl py-3.5 pl-11 pr-4 text-xs font-sans text-luxury-white placeholder:text-luxury-dim focus:border-luxury-amber focus:ring-1 focus:ring-luxury-amber/30 focus:outline-none transition-all"
             />
           </div>
 
           {/* Department Select */}
-          <div className="sm:col-span-4">
+          <div className="sm:col-span-4 relative">
+            <SlidersHorizontal className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-luxury-dim pointer-events-none" />
             <select
               value={selectedDept}
               onChange={(e) => {
                 setSelectedDept(e.target.value);
                 setDisplayCount(12);
               }}
-              className="w-full bg-luxury-carbon border border-white/10 py-3 px-4 text-xs font-sans text-luxury-white focus:border-luxury-amber focus:outline-none"
+              className="w-full bg-[#0C0913]/90 border border-white/12 rounded-xl py-3.5 pl-11 pr-4 text-xs font-sans text-luxury-white focus:border-luxury-amber focus:ring-1 focus:ring-luxury-amber/30 focus:outline-none appearance-none transition-all cursor-pointer"
             >
               {departmentsList.map((d) => (
                 <option key={d} value={d} className="bg-luxury-obsidian text-luxury-white">
@@ -117,9 +117,9 @@ export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps)
           </div>
         </div>
 
-        {/* Editorial Events Grid */}
+        {/* 3D Shift Card Events Grid */}
         {visibleMissions.length > 0 ? (
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {visibleMissions.map((mission) => (
               <MissionCard
                 key={mission.id}
@@ -129,7 +129,7 @@ export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps)
             ))}
           </div>
         ) : (
-          <div className="mt-20 py-16 text-center border-t border-b border-white/10">
+          <div className="mt-20 py-16 text-center border border-white/10 rounded-2xl bg-white/[0.02]">
             <h3 className="font-display text-2xl uppercase tracking-wider text-luxury-white">
               NO MATCHING EVENTS FOUND
             </h3>
@@ -139,15 +139,16 @@ export default function MissionBrowser({ onAcceptMission }: MissionBrowserProps)
           </div>
         )}
 
-        {/* Load More Button */}
+        {/* Load More Button: Cult UI MetalButton */}
         {filteredMissions.length > displayCount && (
           <div className="mt-16 text-center">
-            <button
+            <MetalButton
+              variant="titanium"
+              size="lg"
               onClick={() => setDisplayCount((prev) => prev + 12)}
-              className="px-8 py-3 rounded-full border border-white/20 font-display text-xs uppercase tracking-widest text-luxury-white hover:border-luxury-amber hover:text-luxury-amber transition-colors"
             >
-              VIEW MORE EVENTS ({filteredMissions.length - displayCount} REMAINING)
-            </button>
+              VIEW MORE DIRECTORY ENTRIES ({filteredMissions.length - displayCount} REMAINING)
+            </MetalButton>
           </div>
         )}
       </div>

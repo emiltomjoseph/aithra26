@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import HeroFallback from "@/components/hero/HeroFallback";
+import BorderBeamButton from "@/components/ui/BorderBeamButton";
+import MetalButton from "@/components/ui/MetalButton";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
 // Dynamically import 3D WebGL Canvas
@@ -107,21 +109,25 @@ export default function Hero({ onOpenRegister }: HeroProps) {
             Where engineering mastery meets the thrill of the open circuit. Experience Kerala&apos;s most prestigious technology festival.
           </p>
 
-          {/* Minimal Action Triggers */}
+          {/* Cult UI Luxury Action Triggers */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
+            <BorderBeamButton
               onClick={onOpenRegister}
-              className="w-full sm:w-auto px-7 py-3 rounded-full bg-luxury-white text-luxury-obsidian font-display text-sm uppercase tracking-widest font-bold transition-transform duration-300 hover:scale-105 hover:bg-luxury-amber"
+              size="lg"
+              glowColor="amber"
+              className="w-full sm:w-auto"
             >
               REGISTER CREDENTIALS
-            </button>
+            </BorderBeamButton>
 
-            <button
+            <MetalButton
+              variant="titanium"
+              size="lg"
               onClick={handleScrollToEvents}
-              className="w-full sm:w-auto px-7 py-3 rounded-full border border-white/20 text-luxury-white font-display text-sm uppercase tracking-widest transition-colors duration-300 hover:border-luxury-amber hover:text-luxury-amber"
+              className="w-full sm:w-auto"
             >
-              EXPLORE EVENTS
-            </button>
+              EXPLORE DIRECTORY
+            </MetalButton>
           </div>
         </div>
 

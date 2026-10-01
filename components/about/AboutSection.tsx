@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { siteConfig } from "@/data/site";
+import ShiftCard from "@/components/ui/ShiftCard";
 
 export default function AboutSection() {
   return (
@@ -49,23 +50,25 @@ export default function AboutSection() {
             </div>
           </div>
 
-          {/* Right: High-End Full Bleed Imagery */}
+          {/* Right: High-End Full Bleed Imagery with 3D Tilt */}
           <div className="lg:col-span-6 relative">
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-sm border border-white/10 group">
-              <Image
-                src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
-                alt="Automotive & Tech Precision"
-                fill
-                className="object-cover grayscale contrast-125 transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian via-transparent to-transparent opacity-60" />
+            <ShiftCard chamfer className="p-0 overflow-hidden">
+              <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
+                  alt="Automotive & Tech Precision"
+                  fill
+                  className="object-cover grayscale contrast-125 transition-transform duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian via-transparent to-transparent opacity-60" />
 
-              {/* Bottom Caption Bar */}
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[10px] font-mono tracking-widest text-luxury-muted">
-                <span>AMAL JYOTHI CAMPUS, KANJIRAPPALLY</span>
-                <span>OCT 2026</span>
+                {/* Bottom Caption Bar */}
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[10px] font-mono tracking-widest text-luxury-muted">
+                  <span>AMAL JYOTHI CAMPUS, KANJIRAPPALLY</span>
+                  <span>OCT 2026</span>
+                </div>
               </div>
-            </div>
+            </ShiftCard>
           </div>
         </div>
       </div>

@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import BorderBeamButton from "@/components/ui/BorderBeamButton";
+import MetalButton from "@/components/ui/MetalButton";
+import { ArrowRight, Trophy } from "lucide-react";
 
 interface FinalCTAProps {
   onOpenRegister: () => void;
@@ -44,28 +46,36 @@ export default function FinalCTA({ onOpenRegister }: FinalCTAProps) {
           <span>•</span>
           <span>AMAL JYOTHI COLLEGE OF ENGINEERING</span>
           <span>•</span>
-          <span className="text-luxury-amber">₹6,00,000+ BOUNTY</span>
+          <span className="text-luxury-amber flex items-center gap-1.5">
+            <Trophy className="h-3.5 w-3.5" />
+            ₹6,00,000+ BOUNTY
+          </span>
         </div>
 
         <p className="mt-6 max-w-xl mx-auto text-xs sm:text-sm font-sans text-luxury-muted font-light leading-relaxed">
           Accreditation passes provide full access to all technical competitions, workshops, hackathons, and symposium tracks.
         </p>
 
-        {/* CTA Buttons */}
+        {/* Cult UI Luxury CTA Buttons */}
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
+          <BorderBeamButton
             onClick={onOpenRegister}
-            className="w-full sm:w-auto px-8 py-4 rounded-full bg-luxury-white text-luxury-obsidian font-display text-sm uppercase tracking-widest font-bold transition-all duration-300 hover:scale-105 hover:bg-luxury-amber"
+            size="lg"
+            glowColor="amber"
+            className="w-full sm:w-auto"
           >
-            REGISTER CREDENTIALS NOW
-          </button>
+            <span>REGISTER CREDENTIALS NOW</span>
+            <ArrowRight className="h-4 w-4" />
+          </BorderBeamButton>
 
-          <button
+          <MetalButton
+            variant="titanium"
+            size="lg"
             onClick={handleScrollToEvents}
-            className="w-full sm:w-auto px-8 py-4 rounded-full border border-white/20 text-luxury-white font-display text-sm uppercase tracking-widest transition-colors duration-300 hover:border-luxury-amber hover:text-luxury-amber"
+            className="w-full sm:w-auto"
           >
             EXPLORE DIRECTORY
-          </button>
+          </MetalButton>
         </div>
       </div>
     </section>

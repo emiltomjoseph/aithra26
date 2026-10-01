@@ -77,3 +77,69 @@ body {
 .tracking-editorial {
   letter-spacing: 0.28em;
 }
+
+/* Cult UI & Automotive Micro-Interactions */
+@keyframes border-beam {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(45deg);
+  }
+}
+
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam 6s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.chamfer-corner {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% 100%,
+    14px 100%,
+    0 calc(100% - 14px)
+  );
+}
+
+.chamfer-sm {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
+}
